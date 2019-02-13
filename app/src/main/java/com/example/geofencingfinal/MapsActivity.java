@@ -1,15 +1,19 @@
 package com.example.geofencingfinal;
 
+import android.Manifest;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
@@ -47,6 +51,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public static final String NEW_GEOFENCE_NUMBER = BuildConfig.APPLICATION_ID + ".NEW_GEOFENCE_NUMBER";
     private PendingIntent mGeofencePendingIntent;
     private SharedPreferences mSharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,19 +61,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        LatLng ff = BAY_AREA_LANDMARKS.get("SFO");
+
         mGeofenceList = new ArrayList<Geofence>();
         buildGoogleApiClient();
         getGeofencePendingIntent();
         populateGeofenceList();
 
         addgeofence();
-
+        // String value = Constants.getHmapCashType().get("A").toString()
     }
 
     public void populateGeofenceList() {
         for (Map.Entry<String, LatLng> entry : BAY_AREA_LANDMARKS.entrySet()) {
 
-            Toast.makeText(getApplicationContext(),"geofences popoullation entered",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "geofences popoullation entered", Toast.LENGTH_LONG).show();
 
             mGeofenceList.add(new Geofence.Builder()
                     // Set the request ID of the geofence. This is a string to identify this
@@ -93,7 +100,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     // Create the geofence.
                     .build());
-            Toast.makeText(getApplicationContext(),"geofences  created",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "geofences  created", Toast.LENGTH_LONG).show();
 
         }
     }
@@ -108,46 +115,51 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-getGeofencingRequest();
+        getGeofencingRequest();
         addgeofence();
         populateGeofenceList();
-buildGoogleApiClient();
+        buildGoogleApiClient();
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(12.933225, 77.605848);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+     //   LatLng sydney = new LatLng(12.933225, 77.605848);
+     //   mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
 
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
 
+addMarker();
     }
-
-
-
-
 
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
 
-       // Toast.makeText(getApplicationContext(),"connected",Toast.LENGTH_SHORT).show();
+        // Toast.makeText(getApplicationContext(),"connected",Toast.LENGTH_SHORT).show();
 
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        Toast.makeText(getApplicationContext(),"suspended",Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "suspended", Toast.LENGTH_LONG).show();
 
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(getApplicationContext(),"connection failed",Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "connection failed", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -166,20 +178,21 @@ buildGoogleApiClient();
         }
 
     }
+
     @Override
     protected void onStart() {
         super.onStart();
 
-            mGoogleApiClient.connect();
-        }
+        mGoogleApiClient.connect();
+    }
 
 
     @Override
     protected void onStop() {
         super.onStop();
 
-            mGoogleApiClient.disconnect();
-        }
+        mGoogleApiClient.disconnect();
+    }
 
     private GeofencingRequest getGeofencingRequest() {
         GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
@@ -187,13 +200,14 @@ buildGoogleApiClient();
         builder.addGeofences(mGeofenceList);
         return builder.build();
     }
+
     private PendingIntent getGeofencePendingIntent() {
         Intent intent = new Intent(this, GeofenceTransitionsIntentService.class);
         // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when calling addgeoFences()
         return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    public void addgeofence(){
+    public void addgeofence() {
         if (!mGoogleApiClient.isConnected()) {
             Toast.makeText(this, getString(R.string.not_connected), Toast.LENGTH_SHORT).show();
             return;
@@ -210,11 +224,12 @@ buildGoogleApiClient();
                     getGeofencePendingIntent()
             ).setResultCallback(this); // Result processed in onResult().
         } catch (SecurityException securityException) {
-            Toast.makeText(getApplicationContext(),"out",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "out", Toast.LENGTH_LONG).show();
             // Catch exception generated if the app does not use ACCESS_FINE_LOCATION permission.
         }
 
     }
+
     private void test_sendNotification(String notificationDetails) {
         // Create an explicit content Intent that starts the main Activity.
         Intent notificationIntent = new Intent(getApplicationContext(), MapsActivity.class);
@@ -256,16 +271,45 @@ buildGoogleApiClient();
         // Issue the notification
         mNotificationManager.notify(0, builder.build());
     }
-    private void addMarker(String key, LatLng latLng) {
+
+    private void addMarker() {
+        LatLng ff = BAY_AREA_LANDMARKS.get("SFO");
+        LatLng ff1 = BAY_AREA_LANDMARKS.get("GOOGLE");
+        LatLng home = BAY_AREA_LANDMARKS.get("home");
+
         mMap.addMarker(new MarkerOptions()
-                .title("G:" + key)
+                // .title("G:" + String)
                 .snippet("Click here if you want delete this geofence")
-                .position(latLng));
+                .position(ff));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(ff));
+
+        mMap.addMarker(new MarkerOptions()
+                // .title("G:" + String)
+                .snippet("Click here if you want delete this geofence")
+                .position(ff1));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(ff1));
+        mMap.addMarker(new MarkerOptions()
+                // .title("G:" + String)
+                .snippet("Click here if you want delete this geofence")
+                .position(home));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(home));
         mMap.addCircle(new CircleOptions()
-                .center(latLng)
+                .center(ff)
                 .radius(GEOFENCE_RADIUS_IN_METERS)
                 .strokeColor(Color.RED)
                 .fillColor(Color.parseColor("#80ff0000")));
+        mMap.addCircle(new CircleOptions()
+                .center(ff1)
+                .radius(GEOFENCE_RADIUS_IN_METERS)
+                .strokeColor(Color.RED)
+                .fillColor(Color.parseColor("#80ff0000")));
+
+        mMap.addCircle(new CircleOptions()
+                .center(home)
+                .radius(GEOFENCE_RADIUS_IN_METERS)
+                .strokeColor(Color.RED)
+                .fillColor(Color.parseColor("#80ff0000")));
+
     }
 }
 
