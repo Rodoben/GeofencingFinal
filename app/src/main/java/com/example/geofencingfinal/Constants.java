@@ -54,16 +54,23 @@ public final class Constants {
     public static final HashMap<String, LatLng> BAY_AREA_LANDMARKS = new HashMap<String, LatLng>();
     static {
         // San Francisco International Airport.
-        BAY_AREA_LANDMARKS.put("SFO", new LatLng(12.901149, 77.618965));
+        BAY_AREA_LANDMARKS.put("audienter", new LatLng(12.936133, 77.606215));
 
         // Googleplex.
-        BAY_AREA_LANDMARKS.put("GOOGLE", new LatLng(12.903748, 77.621218));
+        BAY_AREA_LANDMARKS.put("puc", new LatLng(12.935561, 77.606208));
 
         // Test
-        BAY_AREA_LANDMARKS.put("Udacity Studio", new LatLng(12.896754, 77.622817));
-        BAY_AREA_LANDMARKS.put("home", new LatLng(12.897184, 77.622673));
+        BAY_AREA_LANDMARKS.put(" parking", new LatLng(12.934890, 77.606192));
 
+        BAY_AREA_LANDMARKS.put("centralblock", new LatLng(12.934529, 77.606197));
 
+        BAY_AREA_LANDMARKS.put("block1", new LatLng(12.933932, 77.606426));
+        BAY_AREA_LANDMARKS.put("block2", new LatLng(12.933357, 77.606238));
+        BAY_AREA_LANDMARKS.put("block3", new LatLng(12.931893, 77.606396));
+        BAY_AREA_LANDMARKS.put("block4", new LatLng(12.932131, 77.606000));
+        BAY_AREA_LANDMARKS.put("block2nd", new LatLng(12.932797, 77.606291));
+
+        BAY_AREA_LANDMARKS.put("park",new LatLng(12.934961, 77.606192));
     }
 
 

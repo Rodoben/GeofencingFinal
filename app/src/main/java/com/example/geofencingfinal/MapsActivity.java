@@ -140,7 +140,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         mMap.setMyLocationEnabled(true);
 
-addMarker();
+      addMarker();
     }
 
 
@@ -218,6 +218,7 @@ addMarker();
                     mGoogleApiClient,
                     // The GeofenceRequest object.
                     getGeofencingRequest(),
+
                     // A pending intent that that is reused when calling removeGeofences(). This
                     // pending intent is used to generate an intent when a matched geofence
                     // transition is observed.
@@ -273,42 +274,136 @@ addMarker();
     }
 
     private void addMarker() {
-        LatLng ff = BAY_AREA_LANDMARKS.get("SFO");
-        LatLng ff1 = BAY_AREA_LANDMARKS.get("GOOGLE");
-        LatLng home = BAY_AREA_LANDMARKS.get("home");
+
+
+        LatLng audienter = BAY_AREA_LANDMARKS.get("audienter");
+        LatLng puc = BAY_AREA_LANDMARKS.get("puc");
+        LatLng parking = BAY_AREA_LANDMARKS.get("parking");
+        LatLng centralblock = BAY_AREA_LANDMARKS.get("centralblock");
+        LatLng block1 = BAY_AREA_LANDMARKS.get("block1");
+
+        LatLng block2 = BAY_AREA_LANDMARKS.get("block2");
+        LatLng block3 = BAY_AREA_LANDMARKS.get("block3");
+
+        LatLng block4 = BAY_AREA_LANDMARKS.get("block4");
+
+        LatLng block2nd = BAY_AREA_LANDMARKS.get("block2nd");
+LatLng pp=BAY_AREA_LANDMARKS.get("park");
+
+
 
         mMap.addMarker(new MarkerOptions()
                 // .title("G:" + String)
                 .snippet("Click here if you want delete this geofence")
-                .position(ff));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(ff));
+                .position(audienter));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(audienter));
 
         mMap.addMarker(new MarkerOptions()
                 // .title("G:" + String)
                 .snippet("Click here if you want delete this geofence")
-                .position(ff1));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(ff1));
+                .position(puc));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(puc));
+
+
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(parking));
         mMap.addMarker(new MarkerOptions()
                 // .title("G:" + String)
                 .snippet("Click here if you want delete this geofence")
-                .position(home));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(home));
+                .position(pp));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(pp));
+
+        mMap.addMarker(new MarkerOptions()
+                // .title("G:" + String)
+                .snippet("Click here if you want delete this geofence")
+                .position(centralblock));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(centralblock));
+
+        mMap.addMarker(new MarkerOptions()
+                // .title("G:" + String)
+                .snippet("Click here if you want delete this geofence")
+                .position(block1));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(block1));
+
+        mMap.addMarker(new MarkerOptions()
+                // .title("G:" + String)
+                .snippet("Click here if you want delete this geofence")
+                .position(block2));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(block2));
+        mMap.addMarker(new MarkerOptions()
+                // .title("G:" + String)
+                .snippet("Click here if you want delete this geofence")
+                .position(block3));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(block3));
+
+        mMap.addMarker(new MarkerOptions()
+                // .title("G:" + String)
+                .snippet("Click here if you want delete this geofence")
+                .position(block4));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(block4));
+        mMap.addMarker(new MarkerOptions()
+                // .title("G:" + String)
+                .snippet("Click here if you want delete this geofence")
+                .position(block2nd));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(block2nd));
+
+
+
+        //creating circle around the marker for the geofencing
         mMap.addCircle(new CircleOptions()
-                .center(ff)
+                .center(pp)
                 .radius(GEOFENCE_RADIUS_IN_METERS)
                 .strokeColor(Color.RED)
                 .fillColor(Color.parseColor("#80ff0000")));
         mMap.addCircle(new CircleOptions()
-                .center(ff1)
+                .center(audienter)
+                .radius(GEOFENCE_RADIUS_IN_METERS)
+                .strokeColor(Color.RED)
+                .fillColor(Color.parseColor("#80ff0000")));
+        mMap.addCircle(new CircleOptions()
+                .center(puc)
+                .radius(GEOFENCE_RADIUS_IN_METERS)
+                .strokeColor(Color.RED)
+                .fillColor(Color.parseColor("#80ff0000")));
+
+
+
+        mMap.addCircle(new CircleOptions()
+                .center(centralblock)
+                .radius(GEOFENCE_RADIUS_IN_METERS)
+                .strokeColor(Color.RED)
+                .fillColor(Color.parseColor("#80ff0000")));
+        mMap.addCircle(new CircleOptions()
+                .center(block1)
+                .radius(GEOFENCE_RADIUS_IN_METERS)
+                .strokeColor(Color.RED)
+                .fillColor(Color.parseColor("#80ff0000")));
+        mMap.addCircle(new CircleOptions()
+                .center(block2)
+                .radius(GEOFENCE_RADIUS_IN_METERS)
+                .strokeColor(Color.RED)
+                .fillColor(Color.parseColor("#80ff0000")));
+        mMap.addCircle(new CircleOptions()
+                .center(block3)
                 .radius(GEOFENCE_RADIUS_IN_METERS)
                 .strokeColor(Color.RED)
                 .fillColor(Color.parseColor("#80ff0000")));
 
         mMap.addCircle(new CircleOptions()
-                .center(home)
+                .center(block4)
                 .radius(GEOFENCE_RADIUS_IN_METERS)
                 .strokeColor(Color.RED)
                 .fillColor(Color.parseColor("#80ff0000")));
+        mMap.addCircle(new CircleOptions()
+                .center(block2nd)
+                .radius(GEOFENCE_RADIUS_IN_METERS)
+                .strokeColor(Color.RED)
+                .fillColor(Color.parseColor("#80ff0000")));
+
+    }
+
+    public void retrieve_location(){
+
+
 
     }
 }
